@@ -1,0 +1,165 @@
+html, body
+{
+    font-size: 12px;
+    font-family: Calibri, Arial, Helvetica, sans-serif;
+}
+
+em
+{
+    text-decoration: underline;
+}
+
+div#main
+{
+    min-height: 100%;
+}
+
+header
+{
+    background-color: #FFFFFF;
+    height: 70px;
+    max-width: 100%;
+    z-index: -1;
+    color: #6699FF;
+    font-family: UnitRoundedWeb-Bold,Calibri,Candara,Segoe, "Segoe UI" ,Optima,Arial,sans-serif;
+}
+
+header h1
+{
+    font-size: 28px;
+    margin: 0;
+    margin-left: 75px;
+    margin-top: 0;
+}
+
+header p
+{
+    margin:0;
+    padding: 0;
+    font-size: 18px;
+    margin-left: 75px;
+}
+
+header img
+{
+    height: 70px;
+    position: fixed;
+}
+
+.canvas
+{
+  width: 100%;
+  position: absolute;
+  height: auto;
+  border-top: 2px solid #4974d8;
+  bottom: 0;
+  top: 70px;
+}
+
+div#menu
+{
+    width: 300px;
+    height: 70%;
+    border: 2px solid #4974d8;
+    background-color: White;
+    border-radius: 10px;
+    float: left;
+    top: 140px;
+    left: 5px;
+    position: absolute;
+    z-index: 1;
+    font-family: UnitRoundedWeb-Bold,Calibri,Candara,Segoe,"Segoe UI",Optima,Arial,sans-serif;
+}
+
+div#info
+{
+    width: 70%;
+    height: 250px;
+    border: 2px solid #4974d8;
+    background-color: White;
+    border-radius: 10px;
+    float: right;
+    bottom: 1%;
+    left: 325px;
+    position: absolute;
+    z-index: 1;
+    padding: 15px;
+    font-family: UnitRoundedWeb-Bold,Calibri,Candara,Segoe,"Segoe UI",Optima,Arial,sans-serif;
+    font-size: 12px;
+}
+
+#mouse-position
+{
+    margin-bottom: 0;
+}
+
+.ol-mouse-position
+{
+    background-color: rgba(255,255,255,0.5);
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: Calibri, Verdana, Arial, Sans-Serif;
+}
+
+.popover
+{
+    max-width: 500px;
+}
+
+.popover-content {
+    min-width: 280px;
+}
+
+.popover-content h1 {
+    font-size: 24px;
+}
+
+.popover-content p {
+    font-size: 13px;
+}
+
+.popover-content p em {
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.chart rect
+{
+    /*fill: steelblue;*/
+}
+
+.chart rect:hover
+{
+    fill: brown;
+}
+
+.chart text 
+{
+  font: 12px Calibri, Verdana, Arial, Sans-Serif;
+  fill: Black;
+  text-anchor: end;
+}
+
+.chart text.white
+{
+  fill: White;
+}
+
+.legend
+{
+    right:0;
+    float:right;
+    position:absolute;
+}
+
+.legend rect
+{
+    /*fill: green;*/
+}
+
+.legend text
+{
+    font: 11px Calibri, Verdana, Arial, Sans-Serif;
+}

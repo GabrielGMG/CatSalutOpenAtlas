@@ -1,0 +1,4 @@
+E:\UOC\TFG - SIG\CatSalutOpenAtlas\CatSalutOpenAtlas\bin\CatSalutOpenAtlas.dll
+E:\UOC\TFG - SIG\CatSalutOpenAtlas\CatSalutOpenAtlas\bin\CatSalutOpenAtlas.pdb
+E:\UOC\TFG - SIG\CatSalutOpenAtlas\CatSalutOpenAtlas\obj\Release\CatSalutOpenAtlas.dll
+E:\UOC\TFG - SIG\CatSalutOpenAtlas\CatSalutOpenAtlas\obj\Release\CatSalutOpenAtlas.pdb
