@@ -71,7 +71,6 @@ namespace CatSalutOpenAtlas.Controllers
             regionsLayer.GetGeoJSON();
 
             ViewData["parameter"] = "Assegurats";
-            //ViewData["layerColors"] = Utilitats.GeneratePalette(7, "0.7");
             ViewData["layerColors"] = "[[241,238,246,0.7],[208,209,230,0.7],[166,189,219,0.7],[116,169,207,0.7],[54,144,192,0.7],[5,112,176,0.7],[3,78,123,0.7]]";
             ViewData["colorSpacing"] = (int)(Utilitats.CalculateColorSpacing(7, 5000000, 50000));
             ViewData["max"] = regionsLayer.GetMaxValue("Assegurats").ToString().Replace(',', '.');

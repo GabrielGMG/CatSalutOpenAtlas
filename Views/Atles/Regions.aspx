@@ -156,7 +156,7 @@
 
         var cube = legend.selectAll("g").data(styles).enter().append("g").attr("transform", function(d, i) { return "translate(0," + (i+1) * cubeSide  + ")"; });;
         cube.append("rect").attr("height", cubeSide).attr("width", cubeSide).style("fill", function(d){ return d });
-        cube.append("text").text(function(d,i){ return (min+(colorSpacing*i)).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
+        cube.append("text").text(function(d,i){ return (min+(colorSpacing*i)).toLocaleString()+" - "+(min+(colorSpacing*(i+1))).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
 
         // Redibuixa el mapa (única manera d'arreglar bug de click de features desplaçat)
         map.updateSize();
