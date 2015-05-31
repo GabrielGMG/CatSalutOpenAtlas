@@ -128,7 +128,7 @@ div#info
 
 .chart rect
 {
-    /*fill: steelblue;*/
+    fill: steelblue;
 }
 
 .chart rect:hover

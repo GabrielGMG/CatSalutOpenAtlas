@@ -131,7 +131,7 @@
          // Charting amb D3
         var width = 500, barHeight = 20;
         var chart = d3.select(".chart").attr("width", width).attr("height", barHeight * jsondata.features.length);
-        var x = d3.scale.linear().domain([max/2,max]).range([0, width]);
+        var x = d3.scale.linear().domain([max/2,max]).range([0, width-100]);
 
         var bar = chart.selectAll("g").data(jsondata.features).enter().append("g").attr("transform", function(d, i) { return "translate(100," + i * barHeight + ")"; });
         bar.append("rect").attr("width", function(d) { return x(d.properties.donacionsRate2013); }).attr("height", barHeight - 1);
@@ -146,7 +146,7 @@
 
         var cube = legend.selectAll("g").data(styles).enter().append("g").attr("transform", function(d, i) { return "translate(0," + (i+1) * cubeSide  + ")"; });;
         cube.append("rect").attr("height", cubeSide).attr("width", cubeSide).style("fill", function(d){ return "rgba("+d+")" });
-        cube.append("text").text(function(d,i){ return (min+(colorSpacing*i)).toPrecision(4).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
+        cube.append("text").text(function(d,i){ return (min+(colorSpacing*i)).toLocaleString()+" - "+(min+(colorSpacing*(i+1))).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
 
         // Redibuixa el mapa (única manera d'arreglar bug de click de features desplaçat)
         map.updateSize();
