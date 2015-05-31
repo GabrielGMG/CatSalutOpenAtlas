@@ -5,9 +5,39 @@
     <%= Html.Hidden("layerTitle") %>
 
     <script type="text/javascript">
-        $( document ).ready(function() {
         
+        //$( document ).ready(function() {
+            var jsondataFiltered;
+
+            $("#cerca").removeClass("hidden");
+            $('#cerca').keypress(function(event){
+              if(event.keyCode == 13){
+                $('#btnCerca').click();
+              }
+            });
+
+            function cerca(str, field){
+                jsondataFiltered = clone(jsondata);
+                jsondataFiltered.features = $.grep(jsondataFiltered.features, function(element, index){return element.properties[field].toLowerCase().search(str.toLowerCase())>-1});
+                jsondataFiltered.totalFeatures = jsondataFiltered.features.length;
+                if (str == ""){
+                    jsondataFiltered = clone(jsondata);
+                }
+                vectorLayer.setSource(new ol.source.Vector({
+                    projection: 'EPSG:3857',
+                    features: (new ol.format.GeoJSON()).readFeatures(jsondataFiltered)
+                }));
+            }
+
             var jsondata = <%= ViewData["json"] %>;
+
+            var fields = Object.keys(jsondata.features[0].properties);
+            for (var key in fields){
+                console.log(fields[key]);
+                $("#selCerca").append("<option val="+fields[key]+">"+fields[key]+"</option>");
+            }
+
+            $("#btnCerca").click(function(){cerca($("#txtCerca").val(), $("#selCerca").val())});
 
             map = init();
 
@@ -139,7 +169,6 @@
                 }
             });
 
-
             // Llegenda amb D3
             var cubeSide = 18;
             var legendWidth = 275;
@@ -153,7 +182,7 @@
             // Redibuixa el mapa (única manera d'arreglar bug de click de features desplaçat)
             map.updateSize();
         // Tancament on ready
-        });
+        //});
         
     </script>
 </asp:Content>

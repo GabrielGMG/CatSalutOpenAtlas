@@ -69,6 +69,7 @@ div#menu
     position: absolute;
     z-index: 1;
     font-family: UnitRoundedWeb-Bold,Calibri,Candara,Segoe,"Segoe UI",Optima,Arial,sans-serif;
+    padding: 15px;
 }
 
 div#info
@@ -162,4 +163,9 @@ div#info
 .legend text
 {
     font: 11px Calibri, Verdana, Arial, Sans-Serif;
+}
+
+.hidden
+{
+    visibility: hidden;
 }

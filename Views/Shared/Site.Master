@@ -31,6 +31,14 @@
             <li><a href="Donacions2012">Donacions de sang per regió sanitària (any 2012)</a></li>
             <li><a href="Donacions2013">Donacions de sang per regió sanitària (any 2013)</a></li>
         </ul>
+        <hr />
+        <div id="cerca" class="hidden">
+            <label for="txtCerca">Filtre</label>
+            <select id="selCerca"></select>
+            <br />
+            <input type="text" id="txtCerca" />
+            <button id="btnCerca">OK</button>
+        </div>
     </div>
     <div id="main">
         <header>
