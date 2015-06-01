@@ -52,15 +52,21 @@ namespace CatSalutOpenAtlas.Models
             WebRequest req = WebRequest.Create(this.GenerateRequestUrl());
             req.Method = "POST";
             req.ContentType = "application/json";
-            Stream dataStream = req.GetRequestStream();
-            dataStream.Close();
-            WebResponse resp = req.GetResponse();
-            StreamReader sr = new StreamReader(resp.GetResponseStream());
-            string responseDoc = string.Empty;
-            responseDoc = sr.ReadToEnd();
-            sr.Close();
-
-            this.Json = responseDoc;
+            try
+            {
+                Stream dataStream = req.GetRequestStream();
+                dataStream.Close();
+                WebResponse resp = req.GetResponse();
+                StreamReader sr = new StreamReader(resp.GetResponseStream());
+                string responseDoc = string.Empty;
+                responseDoc = sr.ReadToEnd();
+                sr.Close();
+                this.Json = responseDoc;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private string GenerateRequestUrl()

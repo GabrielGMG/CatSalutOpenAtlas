@@ -11,11 +11,6 @@
 
         map = init();
 
-        // Capa OSM
-        var osmSource = new ol.source.OSM();
-        var osmLayer = new ol.layer.Tile({source: osmSource, title: 'OSM'});
-        map.addLayer(osmLayer);
-
         var colorSpacing = <%= ViewData["colorSpacing"] %>;
         var min = <%= ViewData["min"] %>;
         var max = <%= ViewData["max"] %>;
@@ -126,7 +121,7 @@
         });
 
         // Charting amb D3
-        var width = 150, height = 150;
+        /*var width = 150, height = 150;
         var radius = Math.min(width, height) / 2;
         var colorbrew = d3.scale.ordinal().range(colorbrewer.Set3[7]);
 
@@ -146,7 +141,7 @@
           .attr('d', arc)
           .attr('fill', function(d, i) { 
             return colorbrew(d.data.properties.Assegurats);
-          });
+          });*/
 
         // Llegenda amb D3
         var cubeSide = 18;

@@ -33,18 +33,12 @@
 
             var fields = Object.keys(jsondata.features[0].properties);
             for (var key in fields){
-                console.log(fields[key]);
                 $("#selCerca").append("<option val="+fields[key]+">"+fields[key]+"</option>");
             }
 
             $("#btnCerca").click(function(){cerca($("#txtCerca").val(), $("#selCerca").val())});
 
             map = init();
-
-            // Capa OSM
-            var osmSource = new ol.source.OSM();
-            var osmLayer = new ol.layer.Tile({source: osmSource, title: 'OSM'});
-            map.addLayer(osmLayer);
 
             var colorSpacing = <%= ViewData["colorSpacing"] %>;
             var min = <%= ViewData["min"] %>;

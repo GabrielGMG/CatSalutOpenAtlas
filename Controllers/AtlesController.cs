@@ -24,7 +24,15 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Centres()
         {
             Layer centresLayer = new Layer(Global.PROTOCOLS.WFS, "Centres", "EPSG:3857");
-            centresLayer.GetGeoJSON();
+            try
+            {
+                centresLayer.GetGeoJSON();
+            }
+            catch (Exception ex)
+            {
+                ViewData["layerInfo"] = "El servidor no es troba disponible.";
+                return View();
+            }
 
             List<Feature> features = new List<Feature>();
             features.Add(new Feature(1, "Hospitals", "(228,26,28,1)"));
@@ -49,7 +57,15 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Farmacies()
         {
             Layer farmaciesLayer = new Layer(Global.PROTOCOLS.WFS, "Farmacies", "EPSG:3857");
-            farmaciesLayer.GetGeoJSON();
+            try
+            {
+                farmaciesLayer.GetGeoJSON();
+            }
+            catch (Exception ex)
+            {
+                ViewData["layerInfo"] = "El servidor no es troba disponible.";
+                return View();
+            }
 
             List<Feature> features = new List<Feature>();
             features.Add(new Feature(1, "Farmàcies", "(228,26,28,1)"));
@@ -68,7 +84,15 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Regions()
         {
             Layer regionsLayer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
-            regionsLayer.GetGeoJSON();
+            try
+            {
+                regionsLayer.GetGeoJSON();
+            }
+            catch (Exception ex)
+            {
+                ViewData["layerInfo"] = "El servidor no es troba disponible.";
+                return View();
+            }
 
             ViewData["parameter"] = "Assegurats";
             ViewData["layerColors"] = "[[241,238,246,0.7],[208,209,230,0.7],[166,189,219,0.7],[116,169,207,0.7],[54,144,192,0.7],[5,112,176,0.7],[3,78,123,0.7]]";
@@ -84,7 +108,15 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Donacions2012()
         {
             Layer donacions2012Layer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
-            donacions2012Layer.GetGeoJSON();
+            try
+            {
+                donacions2012Layer.GetGeoJSON();
+            }
+            catch (Exception ex)
+            {
+                ViewData["layerInfo"] = "El servidor no es troba disponible.";
+                return View();
+            }
 
             ViewData["parameter"] = "donacionsRate2012";
             //ViewData["layerColors"] = Utilitats.GeneratePalette(7, "0.7");
@@ -102,7 +134,15 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Donacions2013()
         {
             Layer donacions2013Layer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
-            donacions2013Layer.GetGeoJSON();
+            try
+            {
+                donacions2013Layer.GetGeoJSON();
+            }
+            catch (Exception ex)
+            {
+                ViewData["layerInfo"] = "El servidor no es troba disponible.";
+                return View();
+            }
 
             ViewData["parameter"] = "donacionsRate2013";
             //ViewData["layerColors"] = Utilitats.GeneratePalette(7, "0.7");

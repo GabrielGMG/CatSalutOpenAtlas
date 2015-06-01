@@ -6,11 +6,6 @@
 
             map = init();
 
-            // Capa OSM
-            var osmSource = new ol.source.OSM();
-            var osmLayer = new ol.layer.Tile({source: osmSource, title: 'OSM'});
-            map.addLayer(osmLayer);
-
         // Tancament on ready
         }); 
     </script>

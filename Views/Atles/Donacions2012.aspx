@@ -11,11 +11,6 @@
 
         map = init();
 
-        // Capa OSM
-        var osmSource = new ol.source.OSM();
-        var osmLayer = new ol.layer.Tile({source: osmSource, title: 'OSM'});
-        map.addLayer(osmLayer);
-
         var colorSpacing = <%= ViewData["colorSpacing"] %>;
         var min = <%= ViewData["min"] %>;
         var max = <%= ViewData["max"] %>;
