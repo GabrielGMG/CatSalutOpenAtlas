@@ -48,11 +48,11 @@ function init() {
 
     // Capa Stamen Toner
     var stamenTonerSource = new ol.source.Stamen({ layer: 'toner' });
-    var stamenTonerLayer = new ol.layer.Tile({ source: stamenTonerSource, title: 'Stamen: Toner', type: 'base' });
+    var stamenTonerLayer = new ol.layer.Tile({ source: stamenTonerSource, title: 'Stamen: Toner', type: 'base', visible: false });
 
     // Capa Map Quest Sat
     var mqsatSource = new ol.source.MapQuest({ layer: 'sat' });
-    var mqsatLayer = new ol.layer.Tile({ source: mqsatSource, title: 'Map Quest: Satellite', type: 'base' });
+    var mqsatLayer = new ol.layer.Tile({ source: mqsatSource, title: 'Map Quest: Satellite', type: 'base', visible: false });
 
     // Capa OSM
     var osmSource = new ol.source.OSM();
@@ -65,7 +65,8 @@ function init() {
             params: { 'LAYERS': 'topo' }
         }),
         title: 'ICGC',
-        type: 'base'
+        type: 'base',
+        visible: false
     })
 
     var baselayers = new ol.layer.Group({
@@ -87,4 +88,74 @@ function clone(obj) {
         temp[key] = clone(obj[key]);
 
     return temp;
+}
+
+function creaVoronoi(jsondata, map, colorSpacingV, minV, layerColors, parameter, title) {
+
+    var styles = [];
+    styles = colorbrewer["Oranges"][4];
+    var styleCacheV = {};
+
+    function styleFunctionV(feature, resolution) {
+        var level = feature.get('area');
+        var i = 0;
+        var s = minV;
+        while (i < styles.length) {
+            if (level > s + colorSpacingV) {
+                s = s + colorSpacingV;
+            } else {
+                var result = i;
+                i = styles.length;
+            }
+            i = i + 1;
+        }
+        console.log(result);
+        if (!styleCacheV[level]) {
+            styleCacheV[level] = new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: styles[result == null ? i - 1 : result]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'white'
+                })
+            });
+        }
+        return [styleCacheV[level]];
+    }
+
+    var vectorLayer = new ol.layer.Vector({
+        title: title,
+        source: new ol.source.Vector({
+            projection: 'EPSG:3857',
+            features: (new ol.format.GeoJSON()).readFeatures(jsondata)
+        })
+    })
+    map.addLayer(vectorLayer);
+
+    vectorLayer.setStyle(styleFunctionV);
+
+    var highlightStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: [255, 0, 0, 0.6],
+            width: 2
+        }),
+        fill: new ol.style.Fill({
+            color: [255, 0, 0, 0.2]
+        }),
+        zIndex: 1
+    });
+    var featureOverlay = new ol.FeatureOverlay({
+        map: map,
+        style: highlightStyle
+    });
+    map.on('pointermove', function (browserEvent) {
+        featureOverlay.getFeatures().clear();
+        var coordinate = browserEvent.coordinate;
+        var pixel = browserEvent.pixel;
+        map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+            featureOverlay.addFeature(feature);
+        });
+    });
+
+    return map;
 }

@@ -5,7 +5,7 @@
     <%= Html.Hidden("layerTitle") %>
 
     <script type="text/javascript">
-        $( document ).ready(function() {
+        //$( document ).ready(function() {
         
         var jsondata = <%= ViewData["json"] %>;
 
@@ -24,7 +24,7 @@
             var i = 0;
             var s = min;
             while (i < styles.length){
-                if (level > s + colorSpacing) {
+                if (level >= s + colorSpacing) {
                     s = s + colorSpacing;
                 } else {
                     var result = i;
@@ -35,7 +35,7 @@
             if (!styleCache[level]) {
                 styleCache[level] = new ol.style.Style({
                     fill: new ol.style.Fill({
-                        color: styles[result]
+                        color: styles[result==null?i-1:result]
                     }),
                     stroke : new ol.style.Stroke({
                         color: 'white'
@@ -146,6 +146,6 @@
         // Redibuixa el mapa (única manera d'arreglar bug de click de features desplaçat)
         map.updateSize();
         // Tancament on ready
-        }); 
+        //}); 
     </script>
 </asp:Content>

@@ -24,9 +24,11 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Centres()
         {
             Layer centresLayer = new Layer(Global.PROTOCOLS.WFS, "Centres", "EPSG:3857");
+            Layer voronoiLayer = new Layer(Global.PROTOCOLS.WFS, "CentresVoronoi", "EPSG:3857");
             try
             {
                 centresLayer.GetGeoJSON();
+                voronoiLayer.GetGeoJSON();
             }
             catch (Exception ex)
             {
@@ -47,9 +49,15 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["colorSpacing"] = 1;
             ViewData["max"] = 5;
             ViewData["min"] = 1;
-            ViewData["json"] = centresLayer.Json;
+            ViewData["parameterVoronoi"] = "area";
+            ViewData["colorSpacingVoronoi"] = (int)(Utilitats.CalculateColorSpacing(7, voronoiLayer.GetMaxValue("area"), voronoiLayer.GetMinValue("area")));
+            ViewData["layerColorsVoronoi"] = "[[241,238,246,0.7],[208,209,230,0.7],[166,189,219,0.7],[116,169,207,0.7],[54,144,192,0.7],[5,112,176,0.7],[3,78,123,0.7]]";
+            ViewData["maxVoronoi"] = voronoiLayer.GetMaxValue("area").ToString().Replace(',', '.');
+            ViewData["minVoronoi"] = voronoiLayer.GetMinValue("area").ToString().Replace(',', '.');
+            ViewData["jsonCentres"] = centresLayer.Json;
+            ViewData["jsonVoronoi"] = voronoiLayer.Json;
             ViewData["colors"] = colors;
-            ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de tots els centres del sistema sanitari de Catalunya. Es pot activar la capa 'Heatmap' que mostra el mapa de calor o densitat de la capa de centres. Dóna un indicador de la cobertura sanitària de Catalunya i posa en evidència l'estreta relació amb la densitat de població.";
+            ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de tots els centres del sistema sanitari de Catalunya. Es poden activar les capes 'Heatmap' i 'Voronoi' que mostren el mapa de calor o densitat de la capa de centres. Dóna un indicador de la cobertura sanitària de Catalunya i posa en evidència l'estreta relació amb la densitat de població.";
             ViewData["layerTitle"] = "Centres sanitàris";
             return View();
         }
@@ -96,7 +104,7 @@ namespace CatSalutOpenAtlas.Controllers
 
             ViewData["parameter"] = "Assegurats";
             ViewData["layerColors"] = "[[241,238,246,0.7],[208,209,230,0.7],[166,189,219,0.7],[116,169,207,0.7],[54,144,192,0.7],[5,112,176,0.7],[3,78,123,0.7]]";
-            ViewData["colorSpacing"] = (int)(Utilitats.CalculateColorSpacing(7, 5000000, 50000));
+            ViewData["colorSpacing"] = (int)(Utilitats.CalculateColorSpacing(7, regionsLayer.GetMaxValue("Assegurats"), regionsLayer.GetMinValue("Assegurats")));
             ViewData["max"] = regionsLayer.GetMaxValue("Assegurats").ToString().Replace(',', '.');
             ViewData["min"] = regionsLayer.GetMinValue("Assegurats").ToString().Replace(',', '.');
             ViewData["json"] = regionsLayer.Json;
@@ -121,7 +129,7 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["parameter"] = "donacionsRate2012";
             //ViewData["layerColors"] = Utilitats.GeneratePalette(7, "0.7");
             ViewData["layerColors"] = "[[215,48,39,0.7],[252,141,89,0.7],[254,224,139,0.7],[255,255,191,0.7],[217,239,139,0.7],[145,207,96,0.7],[26,152,80,0.7]]";
-            ViewData["colorSpacing"] = Utilitats.CalculateColorSpacing(7, 50, 32).ToString().Replace(',','.');
+            ViewData["colorSpacing"] = Utilitats.CalculateColorSpacing(7, donacions2012Layer.GetMaxValue("donacionsRate2012"), donacions2012Layer.GetMinValue("donacionsRate2012")).ToString().Replace(',', '.');
             ViewData["max"] = donacions2012Layer.GetMaxValue("donacionsRate2012").ToString().Replace(',', '.');
             ViewData["min"] = donacions2012Layer.GetMinValue("donacionsRate2012").ToString().Replace(',', '.');
             ViewData["json"] = donacions2012Layer.Json;
@@ -129,7 +137,6 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerTitle"] = "Donacions 2012 (per 1000 hab.)";
             return View();
         }
-
 
         public ActionResult Donacions2013()
         {
@@ -147,7 +154,7 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["parameter"] = "donacionsRate2013";
             //ViewData["layerColors"] = Utilitats.GeneratePalette(7, "0.7");
             ViewData["layerColors"] = "[[215,48,39,0.7],[252,141,89,0.7],[254,224,139,0.7],[255,255,191,0.7],[217,239,139,0.7],[145,207,96,0.7],[26,152,80,0.7]]";
-            ViewData["colorSpacing"] = Utilitats.CalculateColorSpacing(7, 44, 31).ToString().Replace(',', '.');
+            ViewData["colorSpacing"] = Utilitats.CalculateColorSpacing(7, donacions2013Layer.GetMaxValue("donacionsRate2013"), donacions2013Layer.GetMinValue("donacionsRate2013")).ToString().Replace(',', '.');
             ViewData["max"] = donacions2013Layer.GetMaxValue("donacionsRate2013").ToString().Replace(',', '.');
             ViewData["min"] = donacions2013Layer.GetMinValue("donacionsRate2013").ToString().Replace(',', '.');
             ViewData["json"] = donacions2013Layer.Json;

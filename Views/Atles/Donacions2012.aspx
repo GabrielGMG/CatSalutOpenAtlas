@@ -35,7 +35,7 @@
             if (!styleCache[level]) {
                 styleCache[level] = new ol.style.Style({
                     fill: new ol.style.Fill({
-                        color: styles[result]
+                        color: styles[result==null?i-1:result]
                     }),
                     stroke : new ol.style.Stroke({
                         color: 'white'

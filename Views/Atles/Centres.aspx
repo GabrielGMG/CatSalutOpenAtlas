@@ -29,7 +29,9 @@
                 }));
             }
 
-            var jsondata = <%= ViewData["json"] %>;
+            var jsondata = <%= ViewData["jsonCentres"] %>;
+            var jsondataVoronoi = <%= ViewData["jsonVoronoi"] %>;
+            
 
             var fields = Object.keys(jsondata.features[0].properties);
             for (var key in fields){
@@ -39,6 +41,7 @@
             $("#btnCerca").click(function(){cerca($("#txtCerca").val(), $("#selCerca").val())});
 
             map = init();
+            map = creaVoronoi(jsondataVoronoi, map, <%= ViewData["colorSpacingVoronoi"] %>, <%= ViewData["minVoronoi"] %>, <%= ViewData["layerColorsVoronoi"] %>, '<%= ViewData["parameterVoronoi"] %>', 'Voronoi');
 
             var colorSpacing = <%= ViewData["colorSpacing"] %>;
             var min = <%= ViewData["min"] %>;
@@ -77,6 +80,7 @@
                 return [styleCache[level]];
             }
 
+            // Mapa de calor (Heatmap)
             var heatmap = new ol.layer.Heatmap({
                 title: 'Heatmap',
                 visible: false,
@@ -104,30 +108,6 @@
             if ($("input#parameter").val() != ""){
                 vectorLayer.setStyle(styleFunction);
             }
-
-            // Hover highlight
-            var highlightStyle = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                  color: [255,0,0,0.6],
-                  width: 2
-                }),
-                fill: new ol.style.Fill({
-                  color: [255,0,0,0.2]
-                }),
-                zIndex: 1
-              });
-            var featureOverlay = new ol.FeatureOverlay({
-                map: map,
-                style: highlightStyle
-            });
-            map.on('pointermove', function(browserEvent) {
-                featureOverlay.getFeatures().clear();
-                var coordinate = browserEvent.coordinate;
-                var pixel = browserEvent.pixel;
-                map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-                    featureOverlay.addFeature(feature);
-                });
-            });
 
             // Popup showing the position the user clicked
             var element = document.getElementById('popup');
