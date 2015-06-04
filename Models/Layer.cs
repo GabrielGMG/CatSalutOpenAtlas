@@ -11,10 +11,39 @@ namespace CatSalutOpenAtlas.Models
 {
     public class Layer
     {
-        private static Global.PROTOCOLS _protocol;
+        private Global.PROTOCOLS _protocol;
+        private Global.LAYERTYPE _layertype;
         private string _name;
         private string _srs;
         private string _json;
+        private string _parameter;
+        private string _parameterDesc;
+        private int _agrupadors;
+        private bool _startVisible;
+
+        public bool StartVisible
+        {
+            get { return _startVisible; }
+            set { _startVisible = value; }
+        }
+
+        public int Agrupadors
+        {
+            get { return _agrupadors; }
+            set { _agrupadors = value; }
+        }
+
+        public string ParameterDesc
+        {
+            get { return _parameterDesc; }
+            set { _parameterDesc = value; }
+        }
+
+        public string Parameter
+        {
+            get { return _parameter; }
+            set { _parameter = value; }
+        }
 
         public string Json
         {
@@ -34,17 +63,32 @@ namespace CatSalutOpenAtlas.Models
             set { _name = value; }
         }
 
-        public Global.PROTOCOLS Protocol
+        public Global.LAYERTYPE Layertype
         {
-            get { return Layer._protocol; }
-            set { Layer._protocol = value; }
+            get { return _layertype; }
+            set { _layertype = value; }
         }
 
-        public Layer(Global.PROTOCOLS pProtocol, string pName, string pSrs)
+        public Global.PROTOCOLS Protocol
+        {
+            get { return _protocol; }
+            set { _protocol = value; }
+        }
+
+        public Layer(Global.PROTOCOLS pProtocol, Global.LAYERTYPE pLayertype, string pName, string pSrs, string pParameter, string pParameterDesc, int pAgrupadors, bool pStartVisible)
         {
             this.Protocol = pProtocol;
+            this.Layertype = pLayertype;
             this.Name = pName;
             this.Srs = pSrs;
+            this.Parameter = pParameter;
+            this.ParameterDesc = pParameterDesc;
+            this.Agrupadors = pAgrupadors;
+            this.StartVisible = pStartVisible;
+            if (pProtocol.Equals(Global.PROTOCOLS.WFS))
+            {
+                this.GetGeoJSON();
+            }
         }
 
         public void GetGeoJSON()
@@ -91,16 +135,39 @@ namespace CatSalutOpenAtlas.Models
 
         public Double GetMaxValue(string property)
         {
-            JObject o = JObject.Parse(this.Json);
-            JArray features = (JArray)o["features"];
-            return (Double)features.Max(p => p["properties"][property]);
+            try
+            {
+                JObject o = JObject.Parse(this.Json);
+                JArray features = (JArray)o["features"];
+                return (Double)features.Max(p => p["properties"][property]);
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
         }
 
         public Double GetMinValue(string property)
         {
-            JObject o = JObject.Parse(this.Json);
-            JArray features = (JArray)o["features"];
-            return (Double)features.Min(p => p["properties"][property]);
+            try
+            {
+                JObject o = JObject.Parse(this.Json);
+                JArray features = (JArray)o["features"];
+                return (Double)features.Min(p => p["properties"][property]);
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Valor numèric del salt entre colors quan es representa un element</returns>
+        public double CalculateColorSpacing()
+        {
+            return (this.GetMaxValue(this.Parameter) - this.GetMinValue(this.Parameter)) / this.Agrupadors;
         }
     }
 }

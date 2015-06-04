@@ -23,8 +23,44 @@ namespace CatSalutOpenAtlas.Controllers
 
         public ActionResult Centres()
         {
-            Layer centresLayer = new Layer(Global.PROTOCOLS.WFS, "Centres", "EPSG:3857");
-            Layer voronoiLayer = new Layer(Global.PROTOCOLS.WFS, "CentresVoronoi", "EPSG:3857");
+            List<Layer> layers = new List<Layer>();
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Centres", "EPSG:3857", "tipus", "Subtema2", 5, true));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "CentresVoronoi", "EPSG:3857", "area", "area", 7, false));
+
+            // Valors a passar a la vista
+            // Nom de la capa de la qual es vol veure la llegenda
+            ViewData["LegendLayer"] = "Centres";
+            // Descripció de la vista
+            ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de tots els centres del sistema sanitari de Catalunya. Es poden activar les capes 'Heatmap' i 'Voronoi' que mostren el mapa de calor o densitat de la capa de centres. Dóna un indicador de la cobertura sanitària de Catalunya i posa en evidència l'estreta relació amb la densitat de població.";
+            // Cercador al camp...
+            ViewData["Cercador"] = "Centres";
+            // Html per incloure a la finestra emergent
+            ViewData["PopupContent"] = "var info = '<h1>'+props['Nom']+'</h1><br /><p><em>Adreça</em>: ' + props['Carrer'] + ', ' + props['CP'] + ', ' + props['Municipi'] + '</p><p><em>Tipus de centre</em>: ' + props['Subtema2'] + '</p>';";
+            return View("Map", layers);
+        }
+
+        public ActionResult Farmacies()
+        {
+            List<Layer> layers = new List<Layer>();
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Farmacies", "EPSG:3857", null, null, 5, true));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "FarmaciesVoronoi", "EPSG:3857", "area", "area", 7, false));
+
+            // Valors a passar a la vista
+            // Nom de la capa de la qual es vol veure la llegenda
+            ViewData["LegendLayer"] = null;
+            // Descripció de la vista
+            ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de les farmàcies de Catalunya (Febrer de 2015).";
+            // Cercador al camp...
+            ViewData["Cercador"] = "Farmacies";
+            // Html per incloure a la finestra emergent
+            ViewData["PopupContent"] = "var info = '<h1>'+props['nom']+'</h1><br /><p><em>Adreça</em>: ' +coord+ props['carrer'] + '. ' + props['municipi'] + '</p>';";
+            return View("Map", layers);
+        }
+
+        /*public ActionResult Centres()
+        {
+            Layer centresLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Centres", "EPSG:3857", "tipus", "Subtema2", 5, true);
+            Layer voronoiLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "CentresVoronoi", "EPSG:3857", "area", "area", 7, true);
             try
             {
                 centresLayer.GetGeoJSON();
@@ -60,11 +96,11 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de tots els centres del sistema sanitari de Catalunya. Es poden activar les capes 'Heatmap' i 'Voronoi' que mostren el mapa de calor o densitat de la capa de centres. Dóna un indicador de la cobertura sanitària de Catalunya i posa en evidència l'estreta relació amb la densitat de població.";
             ViewData["layerTitle"] = "Centres sanitàris";
             return View();
-        }
+        }*/
 
-        public ActionResult Farmacies()
+        /*public ActionResult Farmacies()
         {
-            Layer farmaciesLayer = new Layer(Global.PROTOCOLS.WFS, "Farmacies", "EPSG:3857");
+            Layer farmaciesLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "Farmacies", "EPSG:3857", null, null, 7, true);
             try
             {
                 farmaciesLayer.GetGeoJSON();
@@ -87,11 +123,11 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerInfo"] = "En aquesta capa es mostra la ubicació de les farmàcies de Catalunya (Febrer de 2015).";
             ViewData["layerTitle"] = "Farmàcies";
             return View();
-        }
+        }*/
 
         public ActionResult Regions()
         {
-            Layer regionsLayer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
+            Layer regionsLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "Assegurats", "Assegurats", 7, true);
             try
             {
                 regionsLayer.GetGeoJSON();
@@ -115,7 +151,7 @@ namespace CatSalutOpenAtlas.Controllers
 
         public ActionResult Donacions2012()
         {
-            Layer donacions2012Layer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
+            Layer donacions2012Layer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2012", "donacionsRate2012", 7, true);
             try
             {
                 donacions2012Layer.GetGeoJSON();
@@ -140,7 +176,7 @@ namespace CatSalutOpenAtlas.Controllers
 
         public ActionResult Donacions2013()
         {
-            Layer donacions2013Layer = new Layer(Global.PROTOCOLS.WFS, "RegionsAssegurats", "EPSG:3857");
+            Layer donacions2013Layer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2013", "donacionsRate2013", 7, true);
             try
             {
                 donacions2013Layer.GetGeoJSON();

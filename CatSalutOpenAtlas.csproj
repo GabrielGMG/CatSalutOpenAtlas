@@ -96,6 +96,7 @@
     <Content Include="Views\Atles\Donacions2013.aspx" />
     <Content Include="Views\Atles\Farmacies.aspx" />
     <Content Include="Views\Atles\Leaflet.aspx" />
+    <Content Include="Views\Atles\Map.aspx" />
     <Content Include="Views\Atles\Regions.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

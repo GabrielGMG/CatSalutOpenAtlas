@@ -41,7 +41,7 @@
             $("#btnCerca").click(function(){cerca($("#txtCerca").val(), $("#selCerca").val())});
 
             map = init();
-            map = creaVoronoi(jsondataVoronoi, map, <%= ViewData["colorSpacingVoronoi"] %>, <%= ViewData["minVoronoi"] %>, <%= ViewData["layerColorsVoronoi"] %>, '<%= ViewData["parameterVoronoi"] %>', 'Voronoi');
+            map = creaCapa(jsondataVoronoi, map, <%= ViewData["colorSpacingVoronoi"] %>, <%= ViewData["minVoronoi"] %>, colorbrewer["Oranges"][4], '<%= ViewData["parameterVoronoi"] %>', 'Voronoi');
 
             var colorSpacing = <%= ViewData["colorSpacing"] %>;
             var min = <%= ViewData["min"] %>;

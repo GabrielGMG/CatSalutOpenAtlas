@@ -90,41 +90,99 @@ function clone(obj) {
     return temp;
 }
 
-function creaVoronoi(jsondata, map, colorSpacingV, minV, layerColors, parameter, title) {
+function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, title, layertype, startVisible) {
 
-    var styles = [];
-    styles = colorbrewer["Oranges"][4];
-    var styleCacheV = {};
+    // Creació d'estils
 
-    function styleFunctionV(feature, resolution) {
-        var level = feature.get('area');
-        var i = 0;
-        var s = minV;
-        while (i < styles.length) {
-            if (level > s + colorSpacingV) {
-                s = s + colorSpacingV;
-            } else {
-                var result = i;
-                i = styles.length;
+    // Si parameter es null es una capa sense parametre i no cal fer estils en funció de res
+    if (parameter != null){
+        var stylesPoly = [];
+        stylesPoly = layerColors;
+        var styleCachePoly = {};
+        function styleFunctionPoly(feature, resolution) {
+            var level = feature.get(parameter);
+            var i = 0;
+            var s = min;
+            while (i < stylesPoly.length) {
+                if (level > s + colorSpacing) {
+                    s = s + colorSpacing;
+                } else {
+                    var result = i;
+                    i = stylesPoly.length;
+                }
+                i = i + 1;
             }
-            i = i + 1;
+            if (!styleCachePoly[level]) {
+                styleCachePoly[level] = new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: stylesPoly[result == null ? i - 1 : result]
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'white'
+                    })
+                });
+            }
+            return [styleCachePoly[level]];
         }
-        console.log(result);
-        if (!styleCacheV[level]) {
-            styleCacheV[level] = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: styles[result == null ? i - 1 : result]
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'white'
-                })
-            });
+
+        var stylesPoi = [];
+        stylesPoi = layerColors;
+        var styleCachePoi = {};
+
+        function styleFunctionPoi(feature, resolution) {
+            var level = feature.get(parameter);
+            var i = 0;
+            var s = min;
+            while (i < stylesPoi.length){
+                if (level == s + colorSpacing) {
+                    s = s + colorSpacing;
+                } else {
+                    var result = i;
+                    i = stylesPoi.length;
+                }
+                i = i + 1;
+            }
+            if (!styleCachePoi[level]) {
+                styleCachePoi[level] = new ol.style.Style({
+                    image : new ol.style.Circle({
+                        fill: new ol.style.Fill({
+                            color: stylesPoi[level-1],
+                        }),
+                        stroke : new ol.style.Stroke({
+                            color: 'white'
+                        }),
+                        radius : 5
+                    })
+                });
+            }
+            return [styleCachePoi[level]];
         }
-        return [styleCacheV[level]];
     }
 
+    // Estil per a capes d'un sol estil
+    var stylesUnivalue = [];
+    stylesUnivalue = layerColors;
+    var styleCacheUnivalue = {};
+
+    function styleFunctionUnivalue(feature, resolution) {
+        styleCacheUnivalue[0] = new ol.style.Style({
+            image : new ol.style.Circle({
+                fill: new ol.style.Fill({
+                    color: stylesUnivalue[0],
+                }),
+                stroke : new ol.style.Stroke({
+                    color: 'white'
+                }),
+                radius : 5
+            })
+        });
+        return [styleCacheUnivalue[0]];
+    }
+
+    // Creació de la capa
     var vectorLayer = new ol.layer.Vector({
         title: title,
+        visible: startVisible,
         source: new ol.source.Vector({
             projection: 'EPSG:3857',
             features: (new ol.format.GeoJSON()).readFeatures(jsondata)
@@ -132,8 +190,18 @@ function creaVoronoi(jsondata, map, colorSpacingV, minV, layerColors, parameter,
     })
     map.addLayer(vectorLayer);
 
-    vectorLayer.setStyle(styleFunctionV);
+    // Aplica de l'estil que correspongui
+    if (parameter == null){
+        vectorLayer.setStyle(styleFunctionUnivalue);
+    } else
+    if (layertype == 'POLYGON'){
+        vectorLayer.setStyle(styleFunctionPoly);
+    } else 
+    if (layertype == 'POINT'){
+        vectorLayer.setStyle(styleFunctionPoi);
+    }
 
+    // Realçat d'elements poligonals
     var highlightStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: [255, 0, 0, 0.6],
@@ -157,5 +225,63 @@ function creaVoronoi(jsondata, map, colorSpacingV, minV, layerColors, parameter,
         });
     });
 
+    // Retornem la capa
+    return vectorLayer;
+}
+
+function heatmap(json, map, parameter) {
+    var heatmapLayer = new ol.layer.Heatmap({
+    title: 'Heatmap',
+    visible: false,
+    opacity: 0.7,
+    source: new ol.source.Vector({
+        projection: 'EPSG:3857',
+        features: (new ol.format.GeoJSON()).readFeatures(json)
+        })
+    })
+    map.addLayer(heatmapLayer);
+    heatmapLayer.getSource().on('addfeature', function(event) {
+        var name = event.feature.get(parameter);
+        var magnitude = parseFloat(name.substr(2));
+        event.feature.set('weight', magnitude - 5);
+    });
     return map;
+}
+
+function creaLlegendaCategorica(styles, data){
+    var cubeSide = 16;
+    var legendWidth = 275;
+    var legend = d3.select(".legend").attr("width", legendWidth).attr("height", cubeSide * (styles.length+1));
+    legend.append("text").text("Llegenda").attr("y", cubeSide/2);
+
+    var cube = legend.selectAll("g").data(data).enter().append("g").attr("transform", function(d, i) { return "translate(0," + (i+1) * cubeSide  + ")"; });
+    cube.append("rect").attr("height", cubeSide).attr("width", cubeSide).style("fill", function(d, i){ return styles[d.id-1] });
+    cube.append("text").text(function(d,i){ return (d.desc)}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
+}
+
+function creaLlegendaContinua(styles, min, spacing){
+    var cubeSide = 16;
+    var legendWidth = 275;
+    var legend = d3.select(".legend").attr("width", legendWidth).attr("height", cubeSide * (styles.length+1));
+    legend.append("text").text("Llegenda").attr("y", cubeSide/2);
+
+    var cube = legend.selectAll("g").data(styles).enter().append("g").attr("transform", function(d, i) { return "translate(0," + (i+1) * cubeSide  + ")"; });;
+    cube.append("rect").attr("height", cubeSide).attr("width", cubeSide).style("fill", function(d) { return d });
+    cube.append("text").text(function(d,i){ return (min+(spacing*i)).toLocaleString()+" - "+(min+(spacing*(i+1))).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
+}
+
+function getDistinctValues(json, parameterId, parameterNom){
+    var lookup = {};
+    var items = json.features;
+    var result = [];
+
+    for (var item, i = 0; item = items[i++];) {
+        var name = item.properties[parameterId];
+
+        if (!(name in lookup)) {
+        lookup[name] = 1;
+        result.push({id:name, desc:item.properties[parameterNom]});
+        }
+    }
+    return result;
 }

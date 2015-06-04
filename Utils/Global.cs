@@ -10,5 +10,6 @@ namespace CatSalutOpenAtlas.Utils
         public static string GEO_SERVER_URL = "http://localhost:8080/geoserver";
         public static string GEO_SERVER_WORKSPACE = "TFG";
         public enum PROTOCOLS { WFS, WMS };
+        public enum LAYERTYPE { POINT, POLYGON };
     }
 }
