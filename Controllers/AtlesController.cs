@@ -16,9 +16,10 @@ namespace CatSalutOpenAtlas.Controllers
     [HandleError]
     public class AtlesController : Controller
     {
-        public ActionResult OpenLayers()
+        public ActionResult Index()
         {
-            return View();
+            ViewData["layerInfo"] = "Trieu una capa del menu lateral.";
+            return View("Map", new List<Layer>());
         }
 
         public ActionResult Centres()
@@ -63,7 +64,7 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Regions()
         {
             List<Layer> layers = new List<Layer>();
-            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "Assegurats", "Assegurats", 7, true));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "Assegurats", "Assegurats", 9, true));
 
             // Valors a passar a la vista
             // Nom de la capa de la qual es vol veure la llegenda
@@ -82,7 +83,7 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Donacions2012()
         {
             List<Layer> layers = new List<Layer>();
-            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2012", "donacionsRate2012", 7, true));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2012", "donacionsRate2012", 8, true));
 
             // Valors a passar a la vista
             // Nom de la capa de la qual es vol veure la llegenda
@@ -102,7 +103,7 @@ namespace CatSalutOpenAtlas.Controllers
         public ActionResult Donacions2013()
         {
             List<Layer> layers = new List<Layer>();
-            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2013", "donacionsRate2013", 7, true));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2013", "donacionsRate2013", 8, true));
 
             // Valors a passar a la vista
             // Nom de la capa de la qual es vol veure la llegenda
@@ -119,6 +120,7 @@ namespace CatSalutOpenAtlas.Controllers
             return View("Map", layers);
         }
 
+        // Primera versió de les accions
         /*public ActionResult Centres()
         {
             Layer centresLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Centres", "EPSG:3857", "tipus", "Subtema2", 5, true);

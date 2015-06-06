@@ -105,7 +105,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Atles\OpenLayers.aspx" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Web.config" />

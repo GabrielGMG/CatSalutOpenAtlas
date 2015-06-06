@@ -21,6 +21,7 @@ namespace CatSalutOpenAtlas.Models
         private int _agrupadors;
         private bool _startVisible;
 
+        // Getters i Setters
         public bool StartVisible
         {
             get { return _startVisible; }
@@ -75,6 +76,17 @@ namespace CatSalutOpenAtlas.Models
             set { _protocol = value; }
         }
 
+        /// <summary>
+        /// Constructor amb paràmetres
+        /// </summary>
+        /// <param name="pProtocol">Protocol</param>
+        /// <param name="pLayertype">Tipus de capa</param>
+        /// <param name="pName">Nom de la capa</param>
+        /// <param name="pSrs">SRS de la capa</param>
+        /// <param name="pParameter">Paràmetre clau</param>
+        /// <param name="pParameterDesc">Descripció del paràmetre clau</param>
+        /// <param name="pAgrupadors">Nombre d'agrupadors</param>
+        /// <param name="pStartVisible">Visible a l'inici</param>
         public Layer(Global.PROTOCOLS pProtocol, Global.LAYERTYPE pLayertype, string pName, string pSrs, string pParameter, string pParameterDesc, int pAgrupadors, bool pStartVisible)
         {
             this.Protocol = pProtocol;
@@ -91,6 +103,9 @@ namespace CatSalutOpenAtlas.Models
             }
         }
 
+        /// <summary>
+        /// Crea una petició al servidor i informa el camp Json amb el resultat
+        /// </summary>
         public void GetGeoJSON()
         {
             WebRequest req = WebRequest.Create(this.GenerateRequestUrl());
@@ -113,6 +128,10 @@ namespace CatSalutOpenAtlas.Models
             }
         }
 
+        /// <summary>
+        /// Genera una URL per a la petició al servidor GeoServer
+        /// </summary>
+        /// <returns>La cadena URL de connexió</returns>
         private string GenerateRequestUrl()
         {
             string url = "";
@@ -133,6 +152,11 @@ namespace CatSalutOpenAtlas.Models
             return url;
         }
 
+        /// <summary>
+        /// Calcula el valor màxim d'una propietat del Json d'aquesta capa. Cal que hi hagi dades a l'atribut Json
+        /// </summary>
+        /// <param name="property">Nom de la propietat a calcular</param>
+        /// <returns>El valor màxim de la propietat</returns>
         public Double GetMaxValue(string property)
         {
             try
@@ -147,6 +171,11 @@ namespace CatSalutOpenAtlas.Models
             }
         }
 
+        /// <summary>
+        /// Calcula el valor mínim d'una propietat del Json d'aquesta capa. Cal que hi hagi dades a l'atribut Json
+        /// </summary>
+        /// <param name="property">Nom de la propietat a calcular</param>
+        /// <returns>El valor mínim de la propietat</returns>
         public Double GetMinValue(string property)
         {
             try
@@ -162,7 +191,7 @@ namespace CatSalutOpenAtlas.Models
         }
 
         /// <summary>
-        /// 
+        /// Calcula el valor de separació entre grups. Utilitza el valor màxim, mínim i el nombre de grups
         /// </summary>
         /// <returns>Valor numèric del salt entre colors quan es representa un element</returns>
         public double CalculateColorSpacing()
