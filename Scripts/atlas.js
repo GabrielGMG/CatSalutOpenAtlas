@@ -79,6 +79,17 @@ function init() {
     return map;
 }
 
+// Conversor de colors hexadecimals (#RRGGBB) a colors RGBA (R,G,B,A)
+function convertHex2Rgba(hex,opacity){
+    hex = hex.replace('#','');
+    r = parseInt(hex.substring(0,2), 16);
+    g = parseInt(hex.substring(2,4), 16);
+    b = parseInt(hex.substring(4,6), 16);
+
+    result = 'rgba('+r+','+g+','+b+','+opacity/100+')';
+    return result;
+}
+
 function clone(obj) {
     if (obj == null || typeof (obj) != 'object')
         return obj;
@@ -115,7 +126,7 @@ function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, titl
             if (!styleCachePoly[level]) {
                 styleCachePoly[level] = new ol.style.Style({
                     fill: new ol.style.Fill({
-                        color: stylesPoly[result == null ? i - 1 : result]
+                        color: convertHex2Rgba(stylesPoly[result == null ? i - 1 : result],70)
                     }),
                     stroke: new ol.style.Stroke({
                         color: 'white'
@@ -146,7 +157,7 @@ function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, titl
                 styleCachePoi[level] = new ol.style.Style({
                     image : new ol.style.Circle({
                         fill: new ol.style.Fill({
-                            color: stylesPoi[level-1],
+                            color: stylesPoi[level-1]
                         }),
                         stroke : new ol.style.Stroke({
                             color: 'white'
@@ -168,7 +179,7 @@ function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, titl
         styleCacheUnivalue[0] = new ol.style.Style({
             image : new ol.style.Circle({
                 fill: new ol.style.Fill({
-                    color: stylesUnivalue[0],
+                    color: stylesUnivalue[0]
                 }),
                 stroke : new ol.style.Stroke({
                     color: 'white'
@@ -268,6 +279,17 @@ function creaLlegendaContinua(styles, min, spacing){
     var cube = legend.selectAll("g").data(styles).enter().append("g").attr("transform", function(d, i) { return "translate(0," + (i+1) * cubeSide  + ")"; });;
     cube.append("rect").attr("height", cubeSide).attr("width", cubeSide).style("fill", function(d) { return d });
     cube.append("text").text(function(d,i){ return (min+(spacing*i)).toLocaleString()+" - "+(min+(spacing*(i+1))).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
+}
+
+function creaBarChart(json, parameter, max) {
+    var width = 500, barHeight = 20;
+    var chart = d3.select(".chart").attr("width", width).attr("height", barHeight * json.features.length);
+    var x = d3.scale.linear().domain([max / 2, max]).range([0, width - 100]);
+
+    var bar = chart.selectAll("g").data(json.features).enter().append("g").attr("transform", function (d, i) { return "translate(100," + i * barHeight + ")"; });
+    bar.append("rect").attr("width", function (d) { return x(d.properties[parameter]); }).attr("height", barHeight - 1);
+    bar.append("text").text(function (d, i) { return d.properties.regio }).attr("y", barHeight / 2).attr("dy", ".35em").attr("x", -5);
+    bar.append("text").text(function (d, i) { return d.properties[parameter].toLocaleString() }).attr("y", barHeight / 2).attr("dy", ".35em").attr("x", function (d) { return x(d.properties[parameter]) - 3; }).attr("class", "white");
 }
 
 function getDistinctValues(json, parameterId, parameterNom){

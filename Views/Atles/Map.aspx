@@ -12,7 +12,8 @@
             var json = <%= layer.Json %>;
             var colorSpacing = <%= layer.CalculateColorSpacing().ToString().Replace(',','.') %>;
             var min = <%= layer.GetMinValue(layer.Parameter).ToString().Replace(',','.') %>;
-            var layerColors = colorbrewer["Oranges"][<%= layer.Agrupadors %>];
+            var max = <%= layer.GetMaxValue(layer.Parameter).ToString().Replace(',','.') %>;
+            var layerColors = colorbrewer["RdYlGn"][<%= layer.Agrupadors %>];
             var parameter = <%= layer.Parameter == null ? "null" : "'"+layer.Parameter+"'" %>;
             var parameterDesc = <%= layer.ParameterDesc == null ? "null" : "'"+layer.ParameterDesc+"'" %>;
             var title = '<%= layer.Name %>';
@@ -71,6 +72,12 @@
             $("#btnCerca").click(function(){cerca($("#txtCerca").val(), $("#selCerca").val())});
         <%} %>
 
+        // Càrrega de chart D3
+        <% if (ViewData["BarChart"] != null){ %>
+            var currentlayer = $.grep(layers, function(e){ return e.layertitle == "<%= ViewData["BarChart"] %>"; })[0];
+            creaBarChart(currentlayer.data, parameter, max);
+        <% } %>
+
         // Càrrega de finestra emergent
         var element = document.getElementById('popup');
         var popup = new ol.Overlay({
@@ -79,14 +86,17 @@
         map.addOverlay(popup);
 
         map.on('click', function(evt) {
+            var element = popup.getElement();
+            var coordinate = evt.coordinate;
+
+            $(element).popover('destroy');
+            popup.setPosition(coordinate);
+
             var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                 return feature;
             });
 
             if (feature) {
-                var geometry = feature.getGeometry();
-                var coord = geometry.getCoordinates();
-                popup.setPosition(coord);
                 var props = feature.getProperties();
                 <%= ViewData["PopupContent"] %>
             }

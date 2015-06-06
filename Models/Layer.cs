@@ -83,7 +83,7 @@ namespace CatSalutOpenAtlas.Models
             this.Srs = pSrs;
             this.Parameter = pParameter;
             this.ParameterDesc = pParameterDesc;
-            this.Agrupadors = pAgrupadors;
+            this.Agrupadors = (pAgrupadors < 3) ? 3 : pAgrupadors;
             this.StartVisible = pStartVisible;
             if (pProtocol.Equals(Global.PROTOCOLS.WFS))
             {

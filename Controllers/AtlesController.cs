@@ -36,14 +36,15 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["Cercador"] = "Centres";
             // Html per incloure a la finestra emergent
             ViewData["PopupContent"] = "var info = '<h1>'+props['Nom']+'</h1><br /><p><em>Adreça</em>: ' + props['Carrer'] + ', ' + props['CP'] + ', ' + props['Municipi'] + '</p><p><em>Tipus de centre</em>: ' + props['Subtema2'] + '</p>';";
+            // Títol de la capa per mostrar a la capçalera
+            ViewData["layerTitle"] = "Centres sanitaris";
             return View("Map", layers);
         }
 
         public ActionResult Farmacies()
         {
             List<Layer> layers = new List<Layer>();
-            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Farmacies", "EPSG:3857", null, null, 5, true));
-            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "FarmaciesVoronoi", "EPSG:3857", "area", "area", 7, false));
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POINT, "Farmacies", "EPSG:3857", null, null, 1, true));
 
             // Valors a passar a la vista
             // Nom de la capa de la qual es vol veure la llegenda
@@ -53,7 +54,68 @@ namespace CatSalutOpenAtlas.Controllers
             // Cercador al camp...
             ViewData["Cercador"] = "Farmacies";
             // Html per incloure a la finestra emergent
-            ViewData["PopupContent"] = "var info = '<h1>'+props['nom']+'</h1><br /><p><em>Adreça</em>: ' +coord+ props['carrer'] + '. ' + props['municipi'] + '</p>';";
+            ViewData["PopupContent"] = "var info = '<h1>'+props['nom']+'</h1><br /><p><em>Adreça</em>: ' +props['carrer'] + '. ' + props['municipi'] + '</p>';";
+            // Títol de la capa per mostrar a la capçalera
+            ViewData["layerTitle"] = "Farmàcies";
+            return View("Map", layers);
+        }
+
+        public ActionResult Regions()
+        {
+            List<Layer> layers = new List<Layer>();
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "Assegurats", "Assegurats", 7, true));
+
+            // Valors a passar a la vista
+            // Nom de la capa de la qual es vol veure la llegenda
+            ViewData["LegendLayer"] = "RegionsAssegurats";
+            // Descripció de la vista
+            ViewData["layerInfo"] = "Aquesta capa representa les diferents regions sanitàries amb informació sobre el nombre d'assegurats a cada una.";
+            // Cercador al camp...
+            ViewData["Cercador"] = null;
+            // Html per incloure a la finestra emergent
+            ViewData["PopupContent"] = "var info = '<h1>'+props['regio']+'</h1><br /><p><em>Assegurats en aquesta regió</em>: ' + props['Assegurats'].toLocaleString() + '</p>';";
+            // Títol de la capa per mostrar a la capçalera
+            ViewData["layerTitle"] = "Regions sanitàries";
+            return View("Map", layers);
+        }
+
+        public ActionResult Donacions2012()
+        {
+            List<Layer> layers = new List<Layer>();
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2012", "donacionsRate2012", 7, true));
+
+            // Valors a passar a la vista
+            // Nom de la capa de la qual es vol veure la llegenda
+            ViewData["LegendLayer"] = "RegionsAssegurats";
+            // Descripció de la vista
+            ViewData["layerInfo"] = "Aquesta capa representa les donacions per cada regió sanitària de Catalunya l'any 2012. Es mostren les donacions totals així com un rati de donacions per cada 1000 assegurats. L'escala de colors s'ha elaborat en base a aquest rati.";
+            // Cercador al camp...
+            ViewData["Cercador"] = null;
+            ViewData["BarChart"] = "RegionsAssegurats";
+            // Html per incloure a la finestra emergent
+            ViewData["PopupContent"] = "var info = '<h1>'+props['regio']+'</h1><br /><p><em>Assegurats en aquesta regió</em>: ' + props['Assegurats'].toLocaleString() + '</p><p><em>Donacions de sang en aquesta regió per cada 1000 hab. (2012)</em>: ' + props['donacionsRate2012'].toLocaleString() + '</p><p><em>Donacions de sang totals en aquesta regió (2012)</em>: ' + props['donacions2012'].toLocaleString() + '</p>';";
+            // Títol de la capa per mostrar a la capçalera
+            ViewData["layerTitle"] = "Donacions de sang (any 2012)";
+            return View("Map", layers);
+        }
+
+        public ActionResult Donacions2013()
+        {
+            List<Layer> layers = new List<Layer>();
+            layers.Add(new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2013", "donacionsRate2013", 7, true));
+
+            // Valors a passar a la vista
+            // Nom de la capa de la qual es vol veure la llegenda
+            ViewData["LegendLayer"] = "RegionsAssegurats";
+            // Descripció de la vista
+            ViewData["layerInfo"] = "Aquesta capa representa les donacions per cada regió sanitària de Catalunya l'any 2013. Es mostren les donacions totals així com un rati de donacions per cada 1000 assegurats. L'escala de colors s'ha elaborat en base a aquest rati.";
+            // Cercador al camp...
+            ViewData["Cercador"] = null;
+            ViewData["BarChart"] = "RegionsAssegurats";
+            // Html per incloure a la finestra emergent
+            ViewData["PopupContent"] = "var info = '<h1>'+props['regio']+'</h1><br /><p><em>Assegurats en aquesta regió</em>: ' + props['Assegurats'].toLocaleString() + '</p><p><em>Donacions de sang en aquesta regió per cada 1000 hab. (2013)</em>: ' + props['donacionsRate2013'].toLocaleString() + '</p><p><em>Donacions de sang totals en aquesta regió (2013)</em>: ' + props['donacions2013'].toLocaleString() + '</p>';";
+            // Títol de la capa per mostrar a la capçalera
+            ViewData["layerTitle"] = "Donacions de sang (any 2013)";
             return View("Map", layers);
         }
 
@@ -125,7 +187,7 @@ namespace CatSalutOpenAtlas.Controllers
             return View();
         }*/
 
-        public ActionResult Regions()
+        /*public ActionResult Regions()
         {
             Layer regionsLayer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "Assegurats", "Assegurats", 7, true);
             try
@@ -147,9 +209,9 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerInfo"] = "Aquesta capa representa les diferents regions sanitàries amb informació sobre el nombre d'assegurats a cada una.";
             ViewData["layerTitle"] = "Assegurats per regió sanitària";
             return View();
-        }
+        }*/
 
-        public ActionResult Donacions2012()
+        /*public ActionResult Donacions2012()
         {
             Layer donacions2012Layer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2012", "donacionsRate2012", 7, true);
             try
@@ -172,9 +234,9 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerInfo"] = "Aquesta capa representa les donacions per cada regió sanitària de Catalunya l'any 2012. Es mostren les donacions totals així com un rati de donacions per cada 1000 assegurats. L'escala de colors s'ha elaborat en base a aquest rati.";
             ViewData["layerTitle"] = "Donacions 2012 (per 1000 hab.)";
             return View();
-        }
+        }*/
 
-        public ActionResult Donacions2013()
+        /*public ActionResult Donacions2013()
         {
             Layer donacions2013Layer = new Layer(Global.PROTOCOLS.WFS, Global.LAYERTYPE.POLYGON, "RegionsAssegurats", "EPSG:3857", "donacionsRate2013", "donacionsRate2013", 7, true);
             try
@@ -197,6 +259,6 @@ namespace CatSalutOpenAtlas.Controllers
             ViewData["layerInfo"] = "Aquesta capa representa les donacions per cada regió sanitària de Catalunya l'any 2013. Es mostren les donacions totals així com un rati de donacions per cada 1000 assegurats. L'escala de colors s'ha elaborat en base a aquest rati.";
             ViewData["layerTitle"] = "Donacions 2013 (per 1000 hab.)";
             return View();
-        }
+        }*/
     }
 }
