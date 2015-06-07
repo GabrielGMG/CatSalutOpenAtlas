@@ -16,12 +16,20 @@ namespace CatSalutOpenAtlas.Controllers
     [HandleError]
     public class AtlesController : Controller
     {
+        /// <summary>
+        /// Acció Index. Acció d'inici per defecte.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes buida</returns>
         public ActionResult Index()
         {
             ViewData["layerInfo"] = "Trieu una capa del menu lateral.";
             return View("Map", new List<Layer>());
         }
 
+        /// <summary>
+        /// Acció Centres.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes a visualitzar</returns>
         public ActionResult Centres()
         {
             List<Layer> layers = new List<Layer>();
@@ -42,6 +50,10 @@ namespace CatSalutOpenAtlas.Controllers
             return View("Map", layers);
         }
 
+        /// <summary>
+        /// Acció Farmacies.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes a visualitzar</returns>
         public ActionResult Farmacies()
         {
             List<Layer> layers = new List<Layer>();
@@ -61,6 +73,10 @@ namespace CatSalutOpenAtlas.Controllers
             return View("Map", layers);
         }
 
+        /// <summary>
+        /// Acció Regions.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes a visualitzar</returns>
         public ActionResult Regions()
         {
             List<Layer> layers = new List<Layer>();
@@ -80,6 +96,10 @@ namespace CatSalutOpenAtlas.Controllers
             return View("Map", layers);
         }
 
+        /// <summary>
+        /// Acció Donacions2012.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes a visualitzar</returns>
         public ActionResult Donacions2012()
         {
             List<Layer> layers = new List<Layer>();
@@ -100,6 +120,10 @@ namespace CatSalutOpenAtlas.Controllers
             return View("Map", layers);
         }
 
+        /// <summary>
+        /// Acció Donacions2013.
+        /// </summary>
+        /// <returns>La vista Map amb una llista de capes a visualitzar</returns>
         public ActionResult Donacions2013()
         {
             List<Layer> layers = new List<Layer>();

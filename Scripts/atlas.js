@@ -69,6 +69,7 @@ function init() {
         visible: false
     })
 
+    // Agrupació de capes. Permet amagar la resta de capes quan es selecciona una d'elles
     var baselayers = new ol.layer.Group({
         title: 'Cartografia base',
         layers: [stamenTonerLayer, mqsatLayer, icgcLayer, osmLayer]
@@ -90,6 +91,7 @@ function convertHex2Rgba(hex,opacity){
     return result;
 }
 
+// Clonació d'objectes per evitar l'assignació per referència de Javascript i així poder fer copies no vinculades d'un objecte.
 function clone(obj) {
     if (obj == null || typeof (obj) != 'object')
         return obj;
@@ -101,6 +103,7 @@ function clone(obj) {
     return temp;
 }
 
+// Creació d'una capa des d'un GeoJSON
 function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, title, layertype, startVisible) {
 
     // Creació d'estils
@@ -240,6 +243,7 @@ function creaCapa(jsondata, map, colorSpacing, min, layerColors, parameter, titl
     return vectorLayer;
 }
 
+// Creació de mapa de calor des d'un GeoJSON que conté punts
 function heatmap(json, map, parameter) {
     var heatmapLayer = new ol.layer.Heatmap({
     title: 'Heatmap',
@@ -259,6 +263,7 @@ function heatmap(json, map, parameter) {
     return map;
 }
 
+// Creació d'una llegenda amb valors categòrics
 function creaLlegendaCategorica(styles, data){
     var cubeSide = 16;
     var legendWidth = 275;
@@ -270,6 +275,7 @@ function creaLlegendaCategorica(styles, data){
     cube.append("text").text(function(d,i){ return (d.desc)}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
 }
 
+// Creació d'una llegenda amb valors continus
 function creaLlegendaContinua(styles, min, spacing){
     var cubeSide = 16;
     var legendWidth = 275;
@@ -281,6 +287,7 @@ function creaLlegendaContinua(styles, min, spacing){
     cube.append("text").text(function(d,i){ return (min+(spacing*i)).toLocaleString()+" - "+(min+(spacing*(i+1))).toLocaleString()}).attr("dy", ".35em").attr("x", cubeSide+5).attr("y", cubeSide/2);
 }
 
+// Creació de gràfic de barres
 function creaBarChart(json, parameter, max) {
     var width = 500, barHeight = 20;
     var chart = d3.select(".chart").attr("width", width).attr("height", barHeight * json.features.length);
@@ -292,6 +299,7 @@ function creaBarChart(json, parameter, max) {
     bar.append("text").text(function (d, i) { return d.properties[parameter].toLocaleString() }).attr("y", barHeight / 2).attr("dy", ".35em").attr("x", function (d) { return x(d.properties[parameter]) - 3; }).attr("class", "white");
 }
 
+// Troba els valors diferents d'un parametre d'un objecte GeoJSON
 function getDistinctValues(json, parameterId, parameterNom){
     var lookup = {};
     var items = json.features;
