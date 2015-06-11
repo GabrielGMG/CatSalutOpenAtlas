@@ -17,9 +17,15 @@ namespace CatSalutOpenAtlas
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "None", // Nombre de ruta
+                "", // URL con parámetros
+                new { controller = "Atles", action = "Index" } // Valores predeterminados de parámetro
+            );
+
+            routes.MapRoute(
                 "Default", // Nombre de ruta
                 "{controller}/{action}/{id}", // URL con parámetros
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Valores predeterminados de parámetro
+                new { controller = "Atles", action = "Index", id = UrlParameter.Optional } // Valores predeterminados de parámetro
             );
 
         }

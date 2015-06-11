@@ -25,11 +25,11 @@
 <body>
     <div id="menu">
         <ul>
-            <li><a href="Regions">Assegurats per regió sanitària</a></li>
-            <li><a href="Centres">Centres Sanitaris</a></li>
-            <li><a href="Farmacies">Catàleg de Farmàcies</a></li>
-            <li><a href="Donacions2012">Donacions de sang per regió sanitària (any 2012)</a></li>
-            <li><a href="Donacions2013">Donacions de sang per regió sanitària (any 2013)</a></li>
+            <li><a href="/Atles/Regions">Assegurats per regió sanitària</a></li>
+            <li><a href="/Atles/Centres">Centres Sanitaris</a></li>
+            <li><a href="/Atles/Farmacies">Catàleg de Farmàcies</a></li>
+            <li><a href="/Atles/Donacions2012">Donacions de sang per regió sanitària (any 2012)</a></li>
+            <li><a href="/Atles/Donacions2013">Donacions de sang per regió sanitària (any 2013)</a></li>
         </ul>
         <hr />
         <div id="cerca" class="hidden">
